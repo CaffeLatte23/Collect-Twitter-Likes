@@ -1,1 +1,2 @@
 # Collect-Twitter-Likes
+Google App Scriptを使ってTwitterでいいねを押した技術記事をSlackチャンネルにポストするスクリプト
