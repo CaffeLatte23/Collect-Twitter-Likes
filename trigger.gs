@@ -1,4 +1,5 @@
+// トリガーでの実行用の関数
 function collectLikes() {
-  postTwitterLikesToSlack('vue')
-  postTwitterLikesToSlack('react')
+  postTwitterLikesToClient('vue')
+  postTwitterLikesToClient('react')
 }

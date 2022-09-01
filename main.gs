@@ -1,6 +1,11 @@
 const property = PropertiesService.getScriptProperties();
 
-function postTwitterLikesToSlack(key){
+const words = {
+  vue: ["vue", "Vue", "nuxt", "Nuxt", "vite", "Vite"],
+  react: ["react", "React", "Next.js", "next.js","nextjs" ] //nextは英単語と混同する可能性があるため、一旦外す
+}
+
+function postTwitterLikesToClient(key){
   const data = getTwitterLikes();
   const keywords = words[key]
 
@@ -10,15 +15,20 @@ function postTwitterLikesToSlack(key){
   
   filterList.forEach((element)=> {
     if(new Date(element.created_at).toDateString() == new Date().toDateString() )
-    postSlackbot("#collect-twitter-like", `https://twitter.com/${element.author_id}/status/${element.id}`, key)
+    sendDiscordMessage(`https://twitter.com/${element.author_id}/status/${element.id}`)
   })
 }
 
 function includeWordsCheck(text, words) {
-  let bIncluded = false;
-  for(const word of words){
-    bIncluded = bIncluded || text.includes(word)
-  }
-  return bIncluded
+  return words.some((element)=> text.includes(element))
+}
+
+function sendDiscordMessage (message){
+  const options = {
+    "method" : "POST",
+    "headers": {"Content-type": "application/json"},
+    "payload" : `{"content":"${message}"}`
+  };
+  UrlFetchApp.fetch(property.getProperty('discord_url'), options);
 }
 
